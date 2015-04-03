@@ -1,0 +1,239 @@
+
+body {
+    background: #ddd;
+    box-sizing: border-box;
+}
+
+#content {
+    background: #ffffff;
+    margin: 20px;
+    padding: 30px;
+    overflow: auto;
+}
+
+
+.article_header, .excludeShapesPolyfillIE {
+    position: relative;
+    height: 100%;
+    float: right;
+    width: 100%;
+    color: #ffffff;
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%);
+    clip-path: url(../img/header_clip.svg#svgClip);
+    shape-outside: polygon(0 0, 100% 0, 100% 100%, 0 50%);
+    shape-margin: 20px;
+}
+
+.article_header_img {
+    width: 100%;
+    display: block;
+}
+
+.article_header_wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.article_header_wrapper:before,
+.article_header_wrapper .before {
+    display: block;
+    content: "";
+    float: left;
+    width: 100%;
+    height: 100%;
+    shape-outside: polygon(0 0, 11% 0, 13% 13%, 19% 31%, 28% 43%, 39% 49%, 49% 50%, 53% 52%, 58% 56%, 63% 63%, 67% 73%, 72% 86%, 77% 95%, 82% 100%, 0 100%);
+    shape-margin: 5px;
+}
+
+.no-shapes .article_header_wrapper:before {
+    display: none;
+}
+
+.article_header_title {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 25px 0 15px 0;
+}
+
+.article_header_intro {
+    font-size: 20px;
+    margin: 0;
+    padding: 0 20px 0 0;
+}
+
+.article_content {
+
+}
+
+.article_content_wrapper {
+    width: 100%;
+    /*-moz-column-count: 2;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 20px;*/
+}
+
+.article_content_block {
+    margin: 0 0 15px 0;
+}
+
+.article_content_insert {
+    float: left;
+    width: 50%;
+    font-size: 24px;
+    margin: 45px 0 0 -15px;
+    shape-outside: border-box;
+}
+
+.article_content_insert_inside {
+    background: #ffb718;
+    margin: 15px 20px 15px 0;
+    padding: 15px;
+}
+
+.article_content_more {
+    background: #dc0031;
+    width: 125px;
+    height: 125px;
+    text-align: center;
+    float: left;
+    border-radius: 50%;
+    shape-outside: margin-box;
+    margin: 15px;
+}
+
+.no-shapes .article_content_more {
+    border-radius: 0;
+    padding: 10px;
+    width: 100px;
+    height: 100px;
+}
+
+.article_content_more_leftShape {
+    display: block;
+    height: 100%;
+    width: 50%;
+    float: left;
+    shape-outside: polygon(0px 0px, 57px 0px, 32px 8px, 10px 25px, 0px 65px, 7px 93px, 25px 114px, 63px 126px, 0px 150px);
+    shape-margin: 10px;
+}
+
+.article_content_more_rightShape {
+    display: block;
+    height: 100%;
+    width: 50%;
+    float: right;
+    shape-outside: polygon(36px 117px, 56px 92px, 64px 61px, 55px 30px, 33px 11px, 0px 0px, 62px 1px, 65px 125px, 4px 126px);
+    shape-margin: 10px;
+}
+
+.no-shapes .article_content_more_leftShape,
+.no-shapes .article_content_more_rightShape {
+    display: none;
+}
+
+.article_content_more_inside {
+    height: 100%;
+}
+
+.sandbag {
+    background: rgba(0,0,0,0.6);
+}
+
+@media only screen and (max-width: 56.250em) {
+
+    #content {
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .article_header {
+        -webkit-clip-path:none;
+        clip-path: none;
+        shape-outside: none;
+        margin-bottom: 15px;
+    }
+
+    .article_header_title,
+    .article_header_intro{
+        padding-left: 15px;
+    }
+
+    .article_header_wrapper:before,
+    .article_header_wrapper .before {
+        display: none;
+        content: "";
+        float: left;
+        width: 100%;
+        height: 100%;
+        shape-outside: none;
+        shape-margin: 0;
+    }
+
+    .article_content_insert {
+        margin: 45px 0 0 -10px;
+    }
+
+    .article_content_insert_inside {
+        padding: 15px 10px;
+    }
+
+}
+
+@media only screen and (max-width: 45em) {
+
+    #content {
+        margin: 5px;
+        padding: 10px;
+    }
+
+    .article_header {
+        position: relative;
+    }
+
+    .article_header_title {
+        position: absolute;
+        top: 0;
+    }
+
+    .article_header_intro {
+        color: #000;
+        padding: 0;
+    }
+
+    .article_header_wrapper {
+        position: static;
+        margin: 15px 0 0 0;
+        padding: 0;
+    }
+
+    .article_content_insert {
+        margin: 45px 0 0 0;
+    }
+
+}
+
+@media only screen and (max-width: 26.563em) {
+
+    #content {
+        margin: 0;
+        padding: 5px;
+    }
+
+    .article_header_title {
+        position: static;
+        color: #000;
+        padding: 0;
+        margin: 0 0 15px 0;
+    }
+
+    .article_content_insert {
+        margin: 45px 0 0 -5px;
+    }
+
+}
+
