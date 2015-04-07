@@ -1128,8 +1128,6 @@
     function ShapeInfo(element) {
         this.metrics = new Metrics(element);
 
-        //this.getQueryStep(element.getAttribute('data-shape-size-mediaqueries').split('|'));
-
         var queryStep = this.getQueryStep(element.getAttribute('data-shape-size-mediaqueries').split('|'));
 
         var parserSettings = {
@@ -1138,6 +1136,7 @@
             shapeMargin: element.getAttribute('data-shape-margin').split('|')[queryStep],
             shapeImageThreshold: element.getAttribute('data-shape-image-threshold').split('|')[queryStep]
         };
+
         this.shapeValue = new ShapeValue(parserSettings);
 
         var self = this;
@@ -1453,7 +1452,6 @@
         for (var i = 0; i < els.length; i++){
             this.polyfill(els[i], settings);
         }
-
     };
 
     Polyfill.prototype.teardown = function() {
@@ -1970,6 +1968,7 @@
         elem.setAttribute('data-' + rule.property, propertyQueriesTab.join('|'));
     };
 
+// thanks to Scott Jehl getEmValue() function he wrote for Respond.js (https://github.com/scottjehl/Respond)
     StylePolyfill.prototype.getEmValue = function() {
         var ret,
             div = window.document.createElement('div'),
@@ -2023,6 +2022,7 @@
             self = this;
         stylesheets.forEach(function(stylesheet) {
 
+            // thanks to Scott Jehl regexp he wrote for Respond.js (https://github.com/scottjehl/Respond)
             cleanCss = stylesheet.cssText.replace( /\/\*[^*]*\*+([^/][^*]*\*+)*\//gi , '' ); // comments
             queries = cleanCss.match( /@media[^\{]+\{([^\{\}]*\{[^\}\{]*\})+/gi ); // queries
 
@@ -2033,8 +2033,8 @@
                     queryMaxWidth = query.match( /\(\s*max\-width\s*:\s*(\s*[0-9\.]+)(px|em)\s*\)/ );
                     styleBlockMQ.push({
                         cssText : query.match( /@media *([^\{]+)\{([\S\s]+?)$/ )[2],
-                        minWidth : queryMinWidth ? queryMinWidth[2] === "em" ? queryMinWidth[1]*self.getEmValue(): queryMinWidth[1] : null,
-                        maxWidth : queryMaxWidth ? queryMaxWidth[2] === "em" ? queryMaxWidth[1]*self.getEmValue(): queryMaxWidth[1] : null
+                        minWidth : queryMinWidth ? queryMinWidth[2] === "em" ? queryMinWidth[1]*self.eminpx : queryMinWidth[1] : null,
+                        maxWidth : queryMaxWidth ? queryMaxWidth[2] === "em" ? queryMaxWidth[1]*self.eminpx : queryMaxWidth[1] : null
                     });
                 });
             }
@@ -2054,24 +2054,25 @@
     StylePolyfill.prototype.parseForShapes = function(stylesheets) {
         // use : and ; as delimiters, except between ()
         // this will be sufficient for most, but not all cases, eg: rectangle(calc(100%))
-        var selector = "\\s*([^{}]*[^\\s])\\s*{[^\\}]*";
-        var value = "\\s*:\\s*((?:[^;\\(]|\\([^\\)]*\\))*)\\s*;";
-        var _this = this;
-        var re, match;
-        var rules = [], properties = ["shape-outside", "shape-margin", "shape-image-threshold"];
+        var selector = "\\s*([^{}]*[^\\s])\\s*{[^\\}]*",
+            value = "\\s*:\\s*((?:[^;\\(]|\\([^\\)]*\\))*)\\s*;",
+            re,
+            match,
+            rules = [],
+            properties = ["shape-outside", "shape-margin", "shape-image-threshold"],
+            _this = this;
+
         properties.forEach(function(property) {
             re = new RegExp(selector + "(" + property + ")" + value, "ig");
             stylesheets.forEach(function(stylesheet) {
                 while ((match = re.exec(stylesheet.cssText)) !== null) {
-                    if(!/(excludeShapesPolyfillIE)/g.test(match[1]) || !_this.isIE()) {
-                        rules.push({
-                            selector: match[1],
-                            property: match[2],
-                            value: match[3],
-                            minWidth: stylesheet.minWidth,
-                            maxWidth: stylesheet.maxWidth
-                        });
-                    }
+                    rules.push({
+                        selector: match[1],
+                        property: match[2],
+                        value: match[3],
+                        minWidth: stylesheet.minWidth,
+                        maxWidth: stylesheet.maxWidth
+                    });
 
                 }
             });
@@ -2079,12 +2080,6 @@
 
         this.callback(rules);
 
-    };
-
-    StylePolyfill.prototype.isIE = function() {
-        return ((navigator.appName == 'Microsoft Internet Explorer') ||
-        ((navigator.appName == 'Netscape') &&
-        (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
     };
 
     scope.ShapesPolyfill = new Polyfill(scope);
